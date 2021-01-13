@@ -1,0 +1,327 @@
+InputForm:
+
+<InputForm>:
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "corona.jpeg"
+
+    ip:ip
+	btnConnect:btnConnect
+	orientation: "vertical"
+
+	BoxLayout:
+	    size: root.height -500 , root.width
+		size_hint_y:0.35
+		Label:
+			text:"Welcome to the one-of-a-kind Covid-19 DataBase!"
+			font_size: '30dp'
+			color: 'red'
+			bold: True
+			underline: True
+
+	# Creating the "connect" button
+	BoxLayout:
+		size_hint_y:0.15
+		ToggleButton:
+		    id: btnConnect
+		    text:"Connect To:"
+		    font_size: '20dp'
+		    # Activates InputForm.connect() method when pressing the button
+		    on_press:root.connect()
+		# Text input for the user's ip, the way we connect to MySQL
+		TextInput:
+			id: ip
+	# For spacing
+	BoxLayout:
+		size_hint_y:0.05
+
+	BoxLayout:
+		size_hint_y:0.1
+		# The button activates InputForm.insert()  Inserts the record given by the user to the MySQL DB.
+		# Creating the "Update DB" button for task 3:
+		Button:
+			text: "Update DB"
+			on_press:root.insert()
+		# The button activates InputForm.displayRecords()  presents the all the records insert by the user so far
+		Button:
+			text: 'Get small sample from the DB'
+			on_press:root.display_sample_from_db()
+		# Creating the "Exit" button:
+		Button:
+			text: 'Finish'
+			on_press:root.out()
+
+	# For spacing
+	BoxLayout:
+		size_hint_y:0.05
+
+	# Defining the other 2 buttons:
+	BoxLayout:
+	    size_hint_y:0.2
+	    Button:
+			text: "I want data on the town level"
+			font_size: '20dp'
+			on_press: root.display_data_town_level()
+
+	    Button:
+	        text: "I want data on the national level"
+	        font_size: '20dp'
+			on_press: root.display_data_national_level()
+    # For spacing
+	BoxLayout:
+		size_hint_y:0.05
+
+
+<show_sample_from_db>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "black.jpeg"
+    results:results
+	orientation: "vertical"
+	Label:
+		id:results
+
+	BoxLayout:
+	    size_hint_y:0.1
+	    Button:
+			text: "Go home"
+			on_press: root.go_home()
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            Button:
+                text: 'Finish'
+                on_press: root.out_sample()
+
+
+<show_data_town_level>:
+    results: results
+    town: town
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "black.jpeg"
+    orientation: "vertical"
+
+	# Defining the header of the screen
+	BoxLayout:
+	    size_hint_y:0.2
+        Label:
+            text: "Here you will be able to find morbidity data\n        and generall data on the town level"
+            font_size: '20dp'
+            bold : True
+            underline: False
+	BoxLayout:
+		size_hint_y:0.1
+		Label:
+			text:"Please choose a town:"
+			font_size: '20dp'
+		# Town name input will be chosen by the spinner tool. The value of the town will be an attribute in the class
+		Spinner:
+			text: "Town"
+			values: ['ABU GHOSH', 'ABU SINAN', 'AFULA', 'AKKO', 'ALE ZAHAV', 'ALFE MENASHE', 'ALLON SHEVUT', 'ARARA', 'ARARA-BANEGEV', 'ARAD', 'ARIEL', 'ARRABE', 'ASHDOD', 'ASHQELON', 'ATLIT', 'AZOR', 'BAREQET', 'BASMA', 'BASMAT TABUN', 'BAT HEFER', 'BAT YAM', 'BEER SHEVA', 'BEER YAAQOV', 'BEIT JANN', 'BENE AYISH', 'BENE BERAQ', 'BERAKHA', 'BET ARYE', 'BET DAGAN', 'BET EL', 'BET HASHMONAY', 'BET SHEAN', 'BET SHEMESH', 'BET YIZHAQ-SH. HEFER', 'BETAR ILLIT', 'BI NE', 'BINYAMINA', 'BIR EL-MAKSUR', 'BUEINE-NUJEIDAT', 'BUQATA', 'DABBURYE', 'DALIYAT AL-KARMEL', 'DEIR AL-ASAD', 'DEIR HANNA', 'DIMONA', 'EFRATA', 'EILABUN', 'EIN MAHEL', 'EIN NAQQUBA', 'EIN QINIYYE', 'ELAZAR', 'ELAT', 'ELI', 'ELQANA', 'ELYAKHIN', 'EVEN YEHUDA', 'EZ EFRAYIM', 'FASSUTA', 'FUREIDIS', 'GAN NER', 'GAN YAVNE', 'GANNE TIQWA', 'GEDERA', 'GEVA BINYAMIN', 'GIVAT BRENNER', 'GIVAT SHEMUEL', 'GIVAT ZEEV', 'GIVATAYIM', 'HADERA', 'HAIFA', 'HAR ADAR', 'HARISH', 'HASHMONAIM', 'HASPIN', 'HAZOR HAGELILIT', 'HERZELIYYA', 'HOD HASHARON', 'HOLON', 'HOSHAAYA', 'HURA', 'HURFEISH', "I'BILLIN", 'IBTIN', 'IKSAL', 'ILUT', 'IMMANUEL', 'ISIFYA', 'JAAT', 'JALJULYE', 'JERUSALEM', 'JISH(GUSH HALAV)', 'JISR AZ-ZARQA', 'JUDEIDE-MAKER', 'JULIS', 'KAABIYYE-TABBASH-HA', 'KABUL', 'KAFAR BARA', 'KAFAR KAMA', 'KAFAR KANNA', 'KAFAR MANDA', 'KAFAR MISR', 'KAFAR QARA', 'KAFAR QASEM', 'KAFAR YASIF', 'KAOKAB ABU AL-HIJA', 'KARMIEL', 'KEFAR ADUMMIM', 'KEFAR HABAD', 'KEFAR HAORANIM', 'KEFAR SAVA', 'KEFAR TAVOR', 'KEFAR VITKIN', 'KEFAR WERADIM', 'KEFAR YONA', 'KISRA-SUMEI', 'KOKHAV HASHAHAR', 'KOKHAV YAAQOV', 'KOKHAV YAIR', 'KUSEIFE', 'LAPPID', 'LAQYE', 'LEHAVIM', 'LOD', 'MAALE ADUMMIM', 'MAALE IRON', 'MAALOT-TARSHIHA', 'MAGALIM', 'MAJD AL-KURUM', 'MAJDAL SHAMS', 'MASADE', 'MATTAN', 'MAZKERET BATYA', 'MAZRAA', 'MERKAZ SHAPPIRA', 'MESHHED', 'METAR', 'MEVASSERET ZIYYON', 'MEVO HORON', 'MIELYA', 'MIGDAL HAEMEQ', 'MIZPE RAMON', 'MIZPE YERIHO', 'MODIIN ILLIT', 'MODIIN-MAKKABBIM-RE', 'MUGHAR', 'MUQEIBLE', 'NAURA', 'NAHARIYYA', 'NAHEF', 'NAZARETH', 'NAZERAT ILLIT', 'NES ZIYYONA', 'NESHER', 'NETANYA', 'NETIVOT', 'NEWE DANIYYEL', 'NIZZAN', 'NOFIT', 'NOQEDIM', 'OFAQIM', 'OFRA', 'OMER', 'OR AQIVA', 'OR YEHUDA', 'ORANIT', 'PARDES HANNA-KARKUR', 'PARDESIYYA', 'PEQIIN (BUQEIA)', 'PETAH TIQWA', 'QADIMA-ZORAN', 'QALANSAWE', 'QARNE SHOMERON', 'QAZRIN', 'QEDUMIM', 'QESARIYYA', 'QIRYAT ARBA', 'QIRYAT ATTA', 'QIRYAT BIALIK', 'QIRYAT EQRON', 'QIRYAT GAT', 'QIRYAT MALAKHI', 'QIRYAT MOTZKIN', 'QIRYAT ONO', 'QIRYAT SHEMONA', 'QIRYAT TIVON', 'QIRYAT YAM', 'QIRYAT YEARIM', 'RAANANA', 'RAHAT', 'RAMAT GAN', 'RAMAT HASHARON', 'RAMAT YISHAY', 'RAME', 'RAMLA', 'REHOVOT', 'REINE', 'REKHASIM', 'REVAVA', 'RISHON LEZIYYON', 'ROSH HAAYIN', 'ROSH PINNA', 'SAJUR', 'SAKHNIN', 'SALLAMA', 'SAVYON', 'SEDEROT', 'SEGEV-SHALOM', 'SHAAB', 'SHAARE TIQWA', 'SHEFARAM', 'SHEIKH DANNUN', 'SHELOMI', 'SHETULIM', 'SHIBLI', 'SHILO', 'SHOHAM', 'SULAM', 'TALMON', 'TAMRA', 'TAYIBE', 'TEL AVIV - YAFO', 'TEL MOND', 'TEL SHEVA', 'TEQOA', 'TIBERIAS', 'TIFRAH', 'TIRAT KARMEL', 'TIRE', 'TUBA-ZANGARIYYE', 'TURAN', 'UMM AL-FAHM', 'UZEIR', 'YAD BINYAMIN', 'YAFI', 'YANUH-JAT', 'YAQIR', 'YAVNE', 'YAVNEEL', 'YEHUD-MONOSON', 'YEROHAM', 'YIRKA', 'YOQNEAM ILLIT', 'ZARZIR', 'ZEFAT', 'ZEMER', 'ZIKHRON YAAQOV', 'ZUFIN', 'ZUR HADASSA', 'ZUR MOSHE', 'ZUR YIZHAQ']
+			id: town
+
+    # SHOWING THE RESULTS
+    Label:
+		id: results
+		size_hint_y:0.4
+
+	# For spacing
+	BoxLayout:
+		size_hint_y:0.05
+
+
+### ALL DIFFERENT BUTTONS
+	BoxLayout:
+	    size_hint_y:0.1
+		# Pressing on the button activates show_data_town_level.show_total_pop() - shows the chosen town's population.
+		Button:
+			text: "Show total population"
+			on_press:root.show_total_pop()
+		# Pressing on the button activates show_data_town_level.show_socioeconomic_score() - shows the chosen town's socioeconomic score.
+		Button:
+			text: "Show socio-economic score"
+			on_press:root.show_socioeconomic_score()
+
+		# Pressing on the button activates show_data_town_level.show_health_data() - shows the chosen town's health data
+		Button:
+			text: 'Show health data'
+			on_press:root.show_health_data()
+
+	    # Pressing on the button activates show_data_town_level.show_trend_figure_town() - shows the chosen town's figure of active cases over time
+	    Button:
+			text: 'Show active cases trend'
+			on_press:root.show_trend_figure_town()
+
+    # Go home button and exit button
+    BoxLayout:
+        size_hint_y:0.03
+		Button:
+			text: "Go home"
+			on_press: root.go_home_town_level()
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            Button:
+                text: 'Finish'
+                on_press: root.out_method_town_level()
+
+# Create a new screen to show the trend over time on the town level
+<screen_for_trend_town>:
+    orientation: "vertical"
+	padding: [10, 0, 10, 0]
+    BoxLayout:
+        size_hint_y:0.9
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "figure_trend_over_time_town.jpeg"
+        orientation: "vertical"
+
+    # Go home button and exit button
+    BoxLayout:
+        size_hint_y:0.1
+		Button:
+			text: "Go home"
+			on_press: root.go_home_screen_for_trend()
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            Button:
+                text: 'Finish'
+                on_press: root.out_method_screen_for_trend()
+
+<show_data_national_level>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "black.jpeg"
+    results:results
+	orientation: "vertical"
+
+	# Defining the header of the screen
+	BoxLayout:
+	    size_hint_y:0.2
+        Label:
+            text: "Here you will be able to find morbidity data\n        and generall data on the national level"
+            font_size: '20dp'
+            bold : True
+            underline: False
+
+    # SHOWING THE RESULTS
+    Label:
+		id: results
+		size_hint_y:0.6
+
+# ALL DIFFERENT BUTTONS
+	BoxLayout:
+	    size_hint_y:0.1
+        # Pressing on the button activates show_data_national_level.show_color_prevalence() - shows the prevelance of the colors according to traffic light model
+        Button:
+            text: "Show color prevalence"
+            on_press:root.show_color_prevalence()
+
+        # Pressing on the button activates show_data_national_level.show_town_highest_positive_cases() - shows the town with the highest positive cases (accumulated)
+        Button:
+            text: "Who's the town with the highest Covid-19 cases?"
+            on_press:root.show_town_highest_positive_cases()
+
+    BoxLayout:
+        size_hint_y:0.1
+        # Pressing on the button activates show_data_national_level.show_national_active_cases() - shows a figure of active cases over time (nation wide)
+        Button:
+            text: "Show national active cases"
+            on_press:root.show_national_active_cases()
+
+        # Pressing on the button activates show_data_national_level.show_national_positivity_rate() - shows a figure of mean positivity rate over time (nation wide)
+        Button:
+            text: "Show national positivity rate"
+            on_press:root.show_national_positivity_rate()
+
+    # Go home button and exit button
+    BoxLayout:
+        size_hint_y:0.1
+		Button:
+			text: "Go home"
+			on_press: root.go_home_national_level()
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            Button:
+                text: 'Finish'
+                on_press: root.out_method_national_level()
+
+
+
+
+# Create a new screen to show the active cases over time on the national level
+<screen_for_national_active_cases>:
+    orientation: "vertical"
+	padding: [10, 0, 10, 0]
+    BoxLayout:
+        size_hint_y:0.9
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "figure_active_cases_national.jpeg"
+        orientation: "vertical"
+
+    # Go home button and exit button
+    BoxLayout:
+        size_hint_y:0.1
+		Button:
+			text: "Go home"
+			on_press: root.go_home_screen_for_national_active_cases()
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            size_hint_y:0.03
+
+        BoxLayout:
+            Button:
+                text: 'Finish'
+                on_press: root.out_method_screen_for_active_cases()
+
+# Create a new screen to show the positivity rate over time on the national level
+<screen_for_national_positivity_rate>:
+    orientation: "vertical"
+    BoxLayout:
+        size_hint_y:0.9
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "figure_positivity_rate_national.jpeg"
+        orientation: "vertical"
+
+    # Go home button and exit button
+    BoxLayout:
+        size_hint_y:0.1
+		Button:
+			text: "Go home"
+			on_press: root.go_home_screen_for_national_positivity_rate()
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            size_hint_y:0.03
+        BoxLayout:
+            Button:
+                text: 'Finish'
+                on_press: root.out_method_screen_for_active_cases()
