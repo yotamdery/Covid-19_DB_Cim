@@ -60,14 +60,14 @@ sick['active_cases'] = sick['accumulated_cases'] - sick['accumulated_recoveries'
 sick = sick.sort_values(by = ['town_code', 'date'])
 
 # In[6]:
-# Filtering towns that don't have more than a week documented (after cleaning)
+# Filtering towns that don't have more than a week of documented data (after cleaning)
 def no_data_for_a_week(df):
     if df.shape[0] < 7:
         pass
     else:
         return df
 sick = sick.groupby('town_code', as_index= False).apply(no_data_for_a_week).reset_index()
-sick = sick.drop(labels= ['level_0','level_1'], axis= 1)
+sick = sick.drop('index', axis= 1)
 
 sick = sick.merge(town_code_to_town, how= 'left', left_on= 'town_code', right_on= 'town_code')
 

@@ -2,7 +2,6 @@
 # coding: utf-8
 #Imports:
 import pandas as pd
-import numpy as np
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
@@ -32,9 +31,9 @@ class InputForm(BoxLayout):
         con.commit()  # Makes transaction
         con.close()  # Close transaction
 
-    # Creating the method which will allow the user to insert his input to the MySQL DB:
+    # Creating the method which will insert the whole df from the health_data.py
     def insert(self):
-        'Inserting user input to DB'
+        'Inserting the DataFrame to DB'
     #    df = pd.read_csv(r'sick_with_pop_socio_grouped.csv')
         df = health_file
         host = self.ip.text
@@ -107,7 +106,7 @@ class show_sample_from_db(BoxLayout):
 
     # Inherit the show method from InputForm class
     show_sample = InputForm.show
-
+    # Inherit the out method from InputForm class
     out_sample = InputForm.out
 
     def __init__(self, ip):
@@ -132,13 +131,12 @@ class show_sample_from_db(BoxLayout):
 
 
 class show_data_town_level(BoxLayout):
-    'Display query results to user'
+
     # Variables from the kivy file.
     results = ObjectProperty()
     town = ObjectProperty()
 
     def __init__(self, ip):
-        'Make a select * query pass all result rows to method show'
         super(show_data_town_level, self).__init__()
         # Save the ip we got to this instance.
         self.ip = ip
@@ -158,6 +156,7 @@ class show_data_town_level(BoxLayout):
         # Query the db to get all stored rows.
         cur.execute("SELECT DISTINCT(Poverty_De) FROM corona_data WHERE town like '%{}%';".format(self.town.text))
         rows = cur.fetchall()
+        # Creating the explanation for the results
         rows.append(['\n','The socio-economic score is scaled between 1 to 10 as follows:', '\n', 'The score 1 represents the highest class, and scor 10 represents the poorest'])
         # Call show with the rows we got.
         self.show_method_town_level(rows)
@@ -179,7 +178,7 @@ class show_data_town_level(BoxLayout):
         cur.execute("SELECT date, active_cases, population  FROM corona_data WHERE town like '%{}%';".format(self.town.text))
         rows = cur.fetchall()
 
-        # Creating a Dataframe from the plot
+        # Creating a Dataframe for the plot
         df = pd.DataFrame(rows)
         df.columns = ['date', 'active_cases', 'population']
         df.set_index('date', inplace= True)
@@ -187,9 +186,9 @@ class show_data_town_level(BoxLayout):
         df.drop(columns= ['active_cases', 'population'], axis = 1, inplace= True)
 
         # Call show with the rows we got.
-        self.show_figure(df, self.town.text)
+        self.show_figure(df)
 
-    def show_figure(self, df, town):
+    def show_figure(self, df):
         # Creating the figure
         figure = df.plot().get_figure()
         plt.ylabel("Percantage of active cases")
@@ -201,7 +200,7 @@ class show_data_town_level(BoxLayout):
         figure.savefig('figure_trend_over_time_town.jpeg')
         # Create new screen to show the figure
         self.clear_widgets()
-        # Add a new form - sample from db. Initialize the sample from db form with the ip we already have.
+        # Add a new form - screen_for_trend_town
         self.add_widget(screen_for_trend_town())
 
 
@@ -223,12 +222,10 @@ class screen_for_trend_town(BoxLayout):
 
 
 class show_data_national_level(BoxLayout):
-    'Display query results to user'
     # Variables from the kivy file.
     results = ObjectProperty()
 
     def __init__(self, ip):
-        'Make a select * query pass all result rows to method show'
         super(show_data_national_level, self).__init__()
         # Save the ip we got to this instance.
         self.ip = ip
@@ -276,7 +273,7 @@ class show_data_national_level(BoxLayout):
         figure.savefig('figure_active_cases_national.jpeg')
         # Create new screen to show the figure
         self.clear_widgets()
-        # Add a new form - sample from db. Initialize the sample from db form with the ip we already have.
+        # Add a new form - screen_for_national_active_cases.
         self.add_widget(screen_for_national_active_cases())
 
     def show_national_positivity_rate(self):
@@ -294,6 +291,7 @@ class show_data_national_level(BoxLayout):
         self.show_positivity_rate_figure(df)
 
     def show_positivity_rate_figure(self,df):
+        # Creating the figure
         figure = df.plot().get_figure()
         plt.ylabel("Positivity rate")
         plt.title("National positivity rate - over time")
@@ -330,6 +328,7 @@ class screen_for_national_positivity_rate(BoxLayout):
     go_home_screen_for_national_positivity_rate = show_sample_from_db.go_home
 
 
+# A class for our kivy application
 class Corona_kivyApp(App):
     pass
 
