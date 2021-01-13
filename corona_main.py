@@ -10,9 +10,11 @@ from sqlalchemy import create_engine
 import pymysql
 import matplotlib.pyplot as plt
 import os
-
 pymysql.install_as_MySQLdb()
+
+# Using the results of the health_data.py script (A DataFrame)
 from health_data import sick_with_pop_socio_grouped as health_file
+
 
 # Main Class of our application
 class InputForm(BoxLayout):
@@ -34,6 +36,7 @@ class InputForm(BoxLayout):
     # Creating the method which will insert the whole df from the health_data.py
     def insert(self):
         'Inserting the DataFrame to DB'
+        'Use the reading file command to save time, Only if you have already run the health_date.py script'
     #    df = pd.read_csv(r'sick_with_pop_socio_grouped.csv')
         df = health_file
         host = self.ip.text
